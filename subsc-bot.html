@@ -1,0 +1,271 @@
+<!--
+  subsc-receipt-bot 案内ページ
+  WordPress の「固定ページ」→「新規追加」→ エディタを「カスタムHTML」モードにして貼り付け
+  ※ Google フォームの埋め込みURLは実際のフォームIDに差し替えてください
+  ※ screenshots/ 配下の画像は WordPress メディアにアップロードした後、URLを書き換えてください
+-->
+
+<div style="max-width:800px; margin:0 auto; font-family:inherit; line-height:1.8; color:#333;">
+
+<h2 style="border-bottom:3px solid #1e4d8c; padding-bottom:8px; color:#1e4d8c;">subsc-receipt-bot</h2>
+
+<p style="font-size:1.05em; color:#555; margin-bottom:24px;">
+ChatGPT・Claude・Google AI など、月次で発生する <strong>サブスクリプション領収書</strong> の処理を自動化する Slack ボット。<br>
+Slack に PDF を投稿するだけで「リネーム保存 → 立替払請求書 (様式第12号) 記入 → プリンタ出力 → 完了通知」までを自動実行します。<br>
+PRISM-HU が運用・提供しています。
+</p>
+
+<div style="background:#e8f0fb; border-left:4px solid #1e4d8c; border-radius:8px; padding:18px 22px; margin-bottom:24px;">
+<h3 style="margin:0 0 8px; font-size:1em; color:#1e4d8c;">基本機能</h3>
+<ul style="margin:0 0 16px; padding-left:20px;">
+<li>領収書 PDF を <strong>「投稿者_サブスク名_支払日.pdf」</strong> 規約で自動リネーム保存 (重複は <code>_2</code>, <code>_3</code> ...)</li>
+<li>立替払請求書 (様式第12号) の <strong>請求日 / 支払年月日 / 件名 / 金額 / 通貨 / 支払先 / チェックボックス / 申請者情報</strong> を自動入力</li>
+<li>プリンタへ <strong>領収書 + 立替請求書 + 証拠書類 を 3 点セット</strong>で送信 (A4 1 枚に自動フィット)</li>
+<li>Slack 投稿スレッドに <strong>完了通知</strong>または <strong>エラー通知</strong>を自動返信</li>
+<li>同じ Slack メッセージ内の INVOICE + RECEIPT 等 (同支払日) は <strong>1 書類セットに自動グルーピング</strong></li>
+<li>同サブスクを複数人で個別契約しているケース (例: ChatGPT を担当者ごと別契約) は <strong>担当者別 Excel ファイル</strong> で自動管理</li>
+</ul>
+
+<h3 style="margin:0 0 8px; font-size:1em; color:#1e4d8c;">安全機能</h3>
+<ul style="margin:0; padding-left:20px;">
+<li><strong>金額変動の検知</strong> — 前月と金額が違う場合は印刷せず警告。意図的な変動なら <code>:white_check_mark:</code> reaction で承認すると処理を続行</li>
+<li><strong>ヘルスチェック</strong> — 起動時にプリンタ・LibreOffice・サブスクフォルダの存在を確認、欠けていれば起動を中止</li>
+<li><strong>idempotency</strong> — 同じ投稿は 1 度しか処理しない (二重印刷防止)</li>
+<li><strong>取り逃しの自動拾い直し</strong> — 起動時に過去 7 日のチャンネル履歴を遡って未処理投稿があれば自動処理</li>
+<li><strong>未登録ユーザー / 解析失敗時</strong>は、印刷せずスレッドにエラー通知のみ</li>
+</ul>
+<p style="margin:10px 0 0; font-size:0.88em; color:#6b7280;">※ すべてのエラーは Slack スレッドに通知され、見逃しを防ぎます。</p>
+</div>
+
+<h3 style="color:#1e4d8c; margin-top:32px;">画面イメージ</h3>
+
+<p>実際の動作例をご紹介します。</p>
+
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin:20px 0;">
+
+  <div style="border:1px solid #d1d5db; border-radius:8px; padding:14px; background:#fff;">
+    <p style="margin:0 0 8px; font-weight:bold; color:#1e4d8c; font-size:0.95em;">領収書を Slack に投稿</p>
+    <img src="screenshots/01-post-receipt.png" alt="Slack チャンネルに PDF を投稿" style="width:100%; height:auto; border:1px solid #e5e7eb; border-radius:4px; display:block;" />
+    <p style="margin:8px 0 0; font-size:0.85em; color:#6b7280;">物品チャンネルに PDF をドラッグ&ドロップするだけ。</p>
+  </div>
+
+  <div style="border:1px solid #d1d5db; border-radius:8px; padding:14px; background:#fff;">
+    <p style="margin:0 0 8px; font-weight:bold; color:#1e4d8c; font-size:0.95em;">自動印刷</p>
+    <img src="screenshots/02-printout.jpg" alt="A4 で 3 点セットが印刷される" style="width:100%; height:auto; border:1px solid #e5e7eb; border-radius:4px; display:block;" />
+    <p style="margin:8px 0 0; font-size:0.85em; color:#6b7280;">領収書 / 立替請求書 / 証拠書類 が A4 で出力されます。</p>
+  </div>
+
+  <div style="border:1px solid #d1d5db; border-radius:8px; padding:14px; background:#fff;">
+    <p style="margin:0 0 8px; font-weight:bold; color:#1e4d8c; font-size:0.95em;">完了通知</p>
+    <img src="screenshots/03-completion.png" alt="Slack に完了通知が届く" style="width:100%; height:auto; border:1px solid #e5e7eb; border-radius:4px; display:block;" />
+    <p style="margin:8px 0 0; font-size:0.85em; color:#6b7280;">処理が終わると Slack に「出力が完了しました」と返信。</p>
+  </div>
+
+  <div style="border:1px solid #d1d5db; border-radius:8px; padding:14px; background:#fff;">
+    <p style="margin:0 0 8px; font-weight:bold; color:#1e4d8c; font-size:0.95em;">金額変動の警告</p>
+    <img src="screenshots/04-amount-warning.png" alt="金額変動時の警告スレッド" style="width:100%; height:auto; border:1px solid #e5e7eb; border-radius:4px; display:block;" />
+    <p style="margin:8px 0 0; font-size:0.85em; color:#6b7280;">前月と金額が違うと印刷せず警告。承認/中止をリアクションで選択。</p>
+  </div>
+
+</div>
+
+<h3 style="color:#1e4d8c; margin-top:32px;">利用の流れ</h3>
+
+<table style="width:100%; border-collapse:collapse; margin:16px 0;">
+<tr style="background:#f3f4f6;">
+<td style="padding:12px 16px; border:1px solid #d1d5db; font-weight:bold; width:40px; text-align:center; color:#1e4d8c;">1</td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;"><strong>お申し込み</strong><br>下記フォームから教室の利用状況 (使用サブスク・人数・常駐機材の有無など) を教えてください。</td>
+</tr>
+<tr>
+<td style="padding:12px 16px; border:1px solid #d1d5db; font-weight:bold; text-align:center; color:#1e4d8c;">2</td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;"><strong>事前打ち合わせ</strong><br>PRISM-HU と教室管理者 (1 名) の間で、常駐機材・Slack 導入状況・サブスクフォルダ構造を確認します。</td>
+</tr>
+<tr style="background:#f3f4f6;">
+<td style="padding:12px 16px; border:1px solid #d1d5db; font-weight:bold; text-align:center; color:#1e4d8c;">3</td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;"><strong>セットアップ (半日)</strong><br>PRISM-HU が訪問して Slack App 作成 / bot インストール / 設定ファイル投入 / 常駐化を行います。</td>
+</tr>
+<tr>
+<td style="padding:12px 16px; border:1px solid #d1d5db; font-weight:bold; text-align:center; color:#1e4d8c;">4</td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;"><strong>1 か月伴走</strong><br>初月は週 1 で動作確認・困りごとヒアリング。 新規サブスク追加方法や運用ルールを教室内で定着させます。</td>
+</tr>
+<tr style="background:#f3f4f6;">
+<td style="padding:12px 16px; border:1px solid #d1d5db; font-weight:bold; text-align:center; color:#1e4d8c;">5</td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;"><strong>本運用</strong><br>以降は教室管理者が日常運用を担当。困りごとがあれば PRISM-HU 事務局に問い合わせ。</td>
+</tr>
+</table>
+
+<h3 style="color:#1e4d8c; margin-top:32px;">対象</h3>
+<ul style="padding-left:20px;">
+<li>北海道大学医学研究院 内の教室・研究室</li>
+<li>サブスクリプション (ChatGPT・Claude・Google AI など) を <strong>複数人または継続的に</strong>利用している</li>
+<li>毎月の立替払請求書 (様式第12号) 作成・印刷が事務負担になっている</li>
+<li>Slack をすでに利用している (未導入教室は別途ご相談ください)</li>
+</ul>
+
+<h3 style="color:#1e4d8c; margin-top:32px;">事前にご準備いただくもの</h3>
+
+<table style="width:100%; border-collapse:collapse; margin:16px 0;">
+<tr style="background:#f3f4f6;">
+<td style="padding:10px 16px; border:1px solid #d1d5db; width:30%;"><strong>常駐機材</strong></td>
+<td style="padding:10px 16px; border:1px solid #d1d5db;">教室内 LAN に接続される常時稼働 <strong>macOS マシン</strong> (中古 Mac mini ¥50K〜80K / 余っている iMac 等)。Windows / Linux 対応は別途ご相談</td>
+</tr>
+<tr>
+<td style="padding:10px 16px; border:1px solid #d1d5db;"><strong>プリンタ</strong></td>
+<td style="padding:10px 16px; border:1px solid #d1d5db;">同 LAN 上の A4 対応プリンタ。CUPS から利用できる機種であれば多くが対応 (RICOH / Canon / EPSON 等で実績)</td>
+</tr>
+<tr style="background:#f3f4f6;">
+<td style="padding:10px 16px; border:1px solid #d1d5db;"><strong>クラウドストレージ</strong></td>
+<td style="padding:10px 16px; border:1px solid #d1d5db;">サブスク書類フォルダの保存先 (北大 OneDrive 推奨)。常駐機材に同期されている必要があります</td>
+</tr>
+<tr>
+<td style="padding:10px 16px; border:1px solid #d1d5db;"><strong>Slack ワークスペース</strong></td>
+<td style="padding:10px 16px; border:1px solid #d1d5db;">教室メンバーが参加するワークスペース。App 作成権限のある管理者 1 名。<br><span style="font-size:0.9em; color:#374151;">※ 本ボットは Slack の有料プラン契約が必須です。Slack は <strong>教育機関向け支援プログラム (Slack for Education)</strong> を提供しており、北大の研究室は <strong>大幅な割引</strong>で導入できます。プラン選定・ベンダーとの契約手続き・既存組織契約の確認などの <strong>橋渡しサポートも PRISM-HU で行います</strong>のでお気軽にご相談ください。</span></td>
+</tr>
+<tr style="background:#f3f4f6;">
+<td style="padding:10px 16px; border:1px solid #d1d5db;"><strong>教室管理者</strong></td>
+<td style="padding:10px 16px; border:1px solid #d1d5db;">セットアップ時に立ち会い、日常運用 (新規サブスク追加・メンバー変更等) を担当する方 1 名</td>
+</tr>
+</table>
+
+<h3 style="color:#1e4d8c; margin-top:32px;">費用</h3>
+<p>
+ソフトウェア本体・セットアップ作業・1 か月の伴走サポートは <strong>無料</strong> で提供します。<br>
+ただし、常駐機材 (Mac mini など) およびプリンタは教室側でご用意ください。
+</p>
+
+<h3 style="color:#1e4d8c; margin-top:32px;">よくある質問</h3>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">うちは様式第12号 (北大の立替払請求書) を使っていますが、Excel のレイアウトをカスタマイズしています。動きますか？</summary>
+<p style="margin:8px 0 0;">セル位置を設定ファイル (<code>excel_cells</code>) で指定する仕組みになっています。標準テンプレートからの変更が大きい場合は、セル位置をご相談いただけば対応します。完全に独自の書式を使っている場合は、テンプレート提供のうえご相談ください。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">同じサブスクを複数人で個別契約しています (ChatGPT で人によってプラン違いなど)。1 つの Excel に混ざりませんか？</summary>
+<p style="margin:8px 0 0;">投稿者ごとに別 Excel ファイルを使う設定 (<code>excel_filename = "ChatGPT_{user}立替.xlsm"</code>) があります。投稿者の名前で自動的にファイルを切り替えるので、各人のデータが混ざりません。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">前月から金額が変わった場合 (値上げ・契約変更など) はどうなりますか？</summary>
+<p style="margin:8px 0 0;">前月との金額差異を検出すると、印刷せずに Slack スレッドに警告メッセージが出ます。意図的な変動なら <code>:white_check_mark:</code> リアクションを付けると、自動的に新金額で再処理されます。不審な変動 (誤った領収書など) はそのまま放置すれば 30 分後にキャンセル扱いになります。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">常駐機材がスリープ・電源 OFF の間に投稿された PDF はどうなりますか？</summary>
+<p style="margin:8px 0 0;">起動時に Slack チャンネル履歴を遡って、未処理の投稿を自動で拾い直します (過去 7 日分)。週末に投稿された PDF も月曜朝の起動時に自動処理されます。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">情報セキュリティ的な懸念はありますか？</summary>
+<p style="margin:8px 0 0;">領収書 PDF や設定ファイルはすべて教室内 (常駐機材のローカルファイル + 教室 OneDrive) に閉じています。Slack を経由するため Slack 社のサーバには投稿内容が一時保存されますが、これは Slack を業務利用していること自体と同じ範囲です。Slack トークンは設定ファイル内で権限 600 (本人のみ読み書き可) で保護されます。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">新しいサブスクを追加するときは PRISM-HU に依頼が必要ですか？</summary>
+<p style="margin:8px 0 0;">教室管理者が設定ファイルに 1 ブロック追加するだけで対応できます (5 分程度)。手順は導入時のマニュアルにも記載されています。フォルダ作成も <code>init-subsc</code> CLI で自動化されます。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">Slack をまだ使っていない教室でも使えますか？</summary>
+<p style="margin:8px 0 0;">Slack の導入支援も含めてご相談ください。事務的にはワークスペース作成 + 教室全員の招待 + 運用ルール策定 の 3 段階で、2〜3 日程度の準備が必要です。Slack 自体の使い方が他の業務 (連絡・資料共有等) でも便利になるため、サブスク処理だけでなく全般的な業務効率化に繋がります。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">北大の MS 包括契約で使える Teams ではダメですか?</summary>
+<p style="margin:8px 0 0;">技術的には Teams 対応も可能ですが、現状は Slack 専用で開発しています。理由は (1) 教室管理者だけで App 導入が完結する自由度、(2) Bot 開発エコシステムの成熟度、(3) PRISM-HU 提供の他ツール (リマインド自動化・メール転送自動化) との設計統一、です。Teams は北大本部 IT 室の管理権限下にあり、Bot 導入時に学内承認が必要なケースがあるため、教室レベルで完結する Slack を採用しています。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">途中で使うのをやめる場合はどうすればよいですか？</summary>
+<p style="margin:8px 0 0;">常駐機材上で <code>launchctl unload</code> コマンドを実行して bot を停止すれば終了です。Slack App は管理画面から削除できます。設定ファイルやログを削除する手順もマニュアルに記載しています。</p>
+</details>
+
+<hr style="border:none; border-top:1px solid #d1d5db; margin:32px 0;">
+
+<h3 style="color:#1e4d8c;">セットアップマニュアル</h3>
+<p>導入後の運用や、教室管理者が日常メンテナンス (新規サブスク追加・メンバー変更・トラブル対応) を行うための詳細マニュアルをご用意しています。</p>
+<p style="margin:12px 0;">
+<a href="MANUAL_PAGE_URL" style="display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:#1e4d8c; color:#fff; border-radius:8px; text-decoration:none; font-weight:600; font-size:0.95em;">教室管理者マニュアルを見る →</a>
+</p>
+<p style="font-size:0.85em; color:#6b7280;">※ お申し込み後にお渡しする運用マニュアルです。</p>
+
+<hr style="border:none; border-top:1px solid #d1d5db; margin:32px 0;">
+
+<h3 style="color:#1e4d8c;" id="guidelines">ご利用にあたって</h3>
+
+<div style="background:#f9fafb; border:1px solid #d1d5db; border-radius:8px; padding:20px 24px; margin:16px 0; font-size:0.92em; line-height:1.9;">
+
+<p style="margin-bottom:12px;"><strong>1. サービスの提供</strong><br>
+subsc-receipt-bot は、PRISM-HU が北海道大学医学研究院内の教室・研究室向けに無償で提供する立替払請求書自動化ツールです。ソフトウェア本体およびセットアップ、初月の運用伴走サポートは PRISM-HU が無償で実施します。</p>
+
+<p style="margin-bottom:12px;"><strong>2. 教室側のご負担</strong><br>
+常駐機材 (Mac mini・Raspberry Pi 等) およびプリンタは教室にてご用意ください。クラウドストレージ (北大 OneDrive 推奨) のサブスク書類フォルダも教室側で管理いただきます。</p>
+
+<p style="margin-bottom:12px;"><strong>3. データの管理</strong><br>
+領収書 PDF・立替請求書 Excel・処理履歴 (SQLite) はすべて教室内 (常駐機材のローカルディスクおよび OneDrive) に保存されます。PRISM-HU はトラブル対応時にのみアクセスし、それ以外で教室データを参照することはありません。Slack 経由のデータは Slack 社のサーバを通過しますが、Slack を業務利用していること自体と同じ範囲です。</p>
+
+<p style="margin-bottom:12px;"><strong>4. 教室管理者の責任</strong><br>
+日常運用 (新規サブスク追加・メンバー変更・印刷確認等) は教室管理者の責任において行ってください。設定ファイルに含まれる Slack トークン等の認証情報は他者と共有しないようご注意ください。トークンが第三者に漏洩した場合は、Slack 管理画面から無効化のうえ PRISM-HU までご連絡ください。</p>
+
+<p style="margin-bottom:12px;"><strong>5. 免責事項</strong><br>
+PRISM-HU は本サービスの安定運用に努めますが、Slack・OneDrive・LibreOffice 等の外部サービスの障害・仕様変更等に起因する不具合について責任を負いかねます。重要な領収書の処理結果は、別途ご自身でも確認されることをお勧めします。</p>
+
+<p style="margin-bottom:12px;"><strong>6. 利用の停止</strong><br>
+ご利用が不要になった場合は、教室管理者にて bot を停止してください。データの削除手順はマニュアルに記載されています。PRISM-HU 側で記録している教室情報の削除が必要な場合は、別途ご連絡ください。</p>
+
+<p style="margin-bottom:0;"><strong>7. 変更について</strong><br>
+本ガイドラインおよびソフトウェア本体は、サービスの改善に伴い変更されることがあります。変更時は本ページにて告知します。</p>
+
+</div>
+
+<p style="font-size:0.85em; color:#6b7280; margin-top:6px;">ご利用 (パイロット導入のご相談を含む) をもって、上記の内容にご同意いただいたものとします。</p>
+
+<hr style="border:none; border-top:1px solid #d1d5db; margin:32px 0;">
+
+<!-- ===== 自動化リクエスト歓迎 (大きめハイライト) ===== -->
+<div style="background:linear-gradient(135deg, #1e4d8c 0%, #2d6cb8 100%); color:#fff; border-radius:12px; padding:28px 32px; margin:32px 0; box-shadow:0 4px 12px rgba(30,77,140,0.15);">
+
+<h3 style="margin:0 0 12px; color:#fff; font-size:1.3em; border:none;">「この業務、自動化できない?」のご相談を歓迎します</h3>
+
+<p style="margin:0 0 16px; font-size:1.05em; line-height:1.8;">
+本ボットの導入には Slack の有料プランや教室内 macOS マシンなどの準備が必要です。すぐに導入できない場合でも、<strong>業務状況をお伺いした上で、教室にあった自動化を一緒に検討します</strong>。ぜひお気軽にご相談ください。
+</p>
+
+<p style="margin:0 0 16px; font-size:0.95em; line-height:1.8;">
+業務内容を <strong>ヒアリング</strong>し、<strong>必要な機能を洗い出し</strong>、その教室に <strong>最適なシステムを組み立てます</strong>。既存ツールの組み合わせで実現できる場合もあれば、新規にツールを設計する場合もあります。Slack 教育プランの導入支援・ベンダー橋渡しもあわせて対応します。
+</p>
+
+<p style="margin:0 0 16px; font-size:0.95em; line-height:1.8;">
+たとえば、以下のようなご相談を過去にいただいています:
+</p>
+
+<ul style="margin:0 0 18px; padding-left:24px; font-size:0.95em; line-height:1.9;">
+<li>月末の <strong>経費集計</strong>を Excel に転記する作業</li>
+<li>毎週同じメンバーへの <strong>定型連絡</strong> (会議案内・週報集約など)</li>
+<li>特定キーワードを含む <strong>メールの抽出・転送</strong></li>
+<li>Google フォーム回答の <strong>集計・要約 → Slack 通知</strong></li>
+<li>外部サイトの <strong>定期チェック</strong> (公募情報・締切リスト)</li>
+<li>カレンダーやタスク管理ツールとの <strong>連携</strong></li>
+</ul>
+
+<p style="margin:0 0 18px; font-size:0.95em; line-height:1.8;">
+業務内容を伺った上で、<strong>自動化の可否・難易度・想定スケジュール</strong>をご提案します。すぐに自動化できない場合でも、業務フロー改善のヒントになる場合があります。
+</p>
+
+<p style="margin:0;">
+<a href="https://forms.gle/9GhyAfjbKWVnyMFZ9" target="_blank" rel="noopener noreferrer" style="display:inline-block; padding:12px 24px; background:#fff; color:#1e4d8c; border-radius:8px; text-decoration:none; font-weight:700; font-size:1em;">ご相談フォームを開く →</a>
+</p>
+
+</div>
+
+<hr style="border:none; border-top:1px solid #d1d5db; margin:32px 0;">
+
+<h3 style="color:#1e4d8c;">お問い合わせ</h3>
+<p>導入前のご質問、現在の業務フローでの利用可否のご相談など、お気軽にご連絡ください。</p>
+<p style="background:#f3f4f6; border-radius:8px; padding:14px 18px; font-size:0.95em;">
+<strong>PRISM-HU 事務局</strong><br>
+<a href="mailto:prism-hu-office@pop.med.hokudai.ac.jp" style="color:#1e4d8c;">prism-hu-office@pop.med.hokudai.ac.jp</a><br>
+<span style="font-size:0.85em; color:#6b7280;">件名に「subsc-receipt-bot」と記載いただけるとスムーズです。</span>
+</p>
+
+</div>

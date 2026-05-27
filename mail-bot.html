@@ -1,0 +1,191 @@
+<!--
+  mail-triage-bot (メール転送自動化) 案内ページ — Coming Soon 版
+  WordPress の「固定ページ」→「新規追加」→ エディタを「カスタムHTML」モードにして貼り付け
+  ※ リリース後、実装機能・スクリーンショット・FAQ を順次拡充してください。
+-->
+
+<div style="max-width:800px; margin:0 auto; font-family:inherit; line-height:1.8; color:#333;">
+
+<h2 style="border-bottom:3px solid #1e4d8c; padding-bottom:8px; color:#1e4d8c;">メール転送自動化 <span style="background:#fef3c7; color:#92400e; font-size:0.55em; padding:4px 12px; border-radius:12px; font-weight:600; vertical-align:middle; margin-left:8px;">開発中</span></h2>
+
+<div style="background:#fef9c3; border-left:4px solid #ca8a04; border-radius:8px; padding:16px 22px; margin-bottom:24px;">
+<p style="margin:0; font-size:0.95em;">
+本ツールは現在 <strong>開発中</strong> です。本ページでは実装予定の機能・想定ユースケースをご紹介しています。<br>
+リリース前のパイロット導入や、要件のすり合わせのご相談を歓迎します。
+</p>
+</div>
+
+<p style="font-size:1.05em; color:#555; margin-bottom:24px;">
+事務代表アドレスに毎日大量に届くメールを、<strong>送信者・件名・本文のルール</strong>で自動的に仕分けし、Slack の対応チャンネルへ振り分け投稿するシステム。<br>
+事務員が毎日行っている <strong>「読んで、要・不要を判断して、必要な人に手動転送する」</strong> 作業を自動化します。<br>
+PRISM-HU が開発・提供を予定しています。
+</p>
+
+<div style="background:#e8f0fb; border-left:4px solid #1e4d8c; border-radius:8px; padding:18px 22px; margin-bottom:24px;">
+<h3 style="margin:0 0 8px; font-size:1em; color:#1e4d8c;">こんなお悩みを解消します</h3>
+<ul style="margin:0 0 16px; padding-left:20px;">
+<li>事務代表アドレスに、人事・庶務・営繕・会計などから <strong>毎日大量のメール</strong>が届く</li>
+<li>1 通ずつ読んで「これは誰宛か」を判断し、<strong>手動で関係者に転送</strong>している</li>
+<li>転送漏れによって <strong>大事な情報が関係者に届かない</strong> ことがある</li>
+<li>事務員不在時 (休暇・退職) に、転送業務が <strong>属人化</strong> していて止まる</li>
+</ul>
+
+<h3 style="margin:0 0 8px; font-size:1em; color:#1e4d8c;">実装予定機能</h3>
+<ul style="margin:0; padding-left:20px;">
+<li>事務代表メールアドレス (Microsoft 365 / Gmail 等) を <strong>定期的にチェック</strong> (5 分間隔など)</li>
+<li>送信者・件名・本文キーワード・添付有無などの <strong>ルールで自動仕分け</strong></li>
+<li>仕分けに応じて Slack の <strong>対応チャンネルに自動投稿</strong> (#人事 / #会計 / #医員向け など)</li>
+<li>添付ファイルは Slack 再アップロードまたは OneDrive へ保存して <strong>リンク投稿</strong></li>
+<li>ルールに当てはまらなかったメールは <strong>「未分類」チャンネル</strong>に流して人の目で確認</li>
+<li>同じメールが <strong>二重投稿されない</strong> (Message-ID で重複検知)</li>
+</ul>
+<p style="margin:10px 0 0; font-size:0.88em; color:#6b7280;">※ 仕様は開発中のため変更される可能性があります。教室ごとの運用にあわせてカスタマイズ可能な設計を予定しています。</p>
+</div>
+
+<h3 style="color:#1e4d8c; margin-top:32px;">想定する運用イメージ</h3>
+
+<table style="width:100%; border-collapse:collapse; margin:16px 0;">
+<tr style="background:#f3f4f6;">
+<td style="padding:12px 16px; border:1px solid #d1d5db; width:25%;"><strong>事務員 / 秘書</strong></td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;">毎日の手動転送がほぼ消える。「未分類」チャンネルだけ目視確認し、必要なら手動転送</td>
+</tr>
+<tr>
+<td style="padding:12px 16px; border:1px solid #d1d5db;"><strong>教員・研究員</strong></td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;">自分に関係するメールだけが Slack の対応チャンネルに届く。メーリングリスト埋もれが減る</td>
+</tr>
+<tr style="background:#f3f4f6;">
+<td style="padding:12px 16px; border:1px solid #d1d5db;"><strong>教室管理者 / 上長</strong></td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;">重要情報の伝達遅延・漏れが減る。事務員の異動時にも転送業務が止まらない</td>
+</tr>
+</table>
+
+<h3 style="color:#1e4d8c; margin-top:32px;">想定する事前準備</h3>
+
+<table style="width:100%; border-collapse:collapse; margin:16px 0;">
+<tr style="background:#f3f4f6;">
+<td style="padding:10px 16px; border:1px solid #d1d5db; width:30%;"><strong>常駐機材</strong></td>
+<td style="padding:10px 16px; border:1px solid #d1d5db;">教室内 LAN に接続される常時稼働 macOS マシン (例: 中古 Mac mini)。サブスク領収書ボットと同じ機材に同居可能</td>
+</tr>
+<tr>
+<td style="padding:10px 16px; border:1px solid #d1d5db;"><strong>事務代表メールアカウント</strong></td>
+<td style="padding:10px 16px; border:1px solid #d1d5db;">IMAP でアクセスできるアカウント (Microsoft 365 / Gmail 等)。読み取り専用パスワードの発行を推奨</td>
+</tr>
+<tr style="background:#f3f4f6;">
+<td style="padding:10px 16px; border:1px solid #d1d5db;"><strong>Slack ワークスペース</strong></td>
+<td style="padding:10px 16px; border:1px solid #d1d5db;">仕分け先チャンネルの作成 + App 作成権限のある管理者 1 名。<br><span style="font-size:0.9em; color:#374151;">※ 本ツールは Slack の有料プラン契約が必須です。Slack は <strong>教育機関向け支援プログラム (Slack for Education)</strong> を提供しており、北大の研究室は <strong>大幅な割引</strong>で導入できます。プラン選定・ベンダーとの契約手続き・既存組織契約の確認などの <strong>橋渡しサポートも PRISM-HU で行います</strong>のでお気軽にご相談ください。</span></td>
+</tr>
+<tr>
+<td style="padding:10px 16px; border:1px solid #d1d5db;"><strong>仕分けルール</strong></td>
+<td style="padding:10px 16px; border:1px solid #d1d5db;">「どのメールをどのチャンネルに流すか」を一覧化したもの。ヒアリングを通じて整理します</td>
+</tr>
+</table>
+
+<h3 style="color:#1e4d8c; margin-top:32px;">開発スケジュール (予定)</h3>
+
+<table style="width:100%; border-collapse:collapse; margin:16px 0;">
+<tr style="background:#f3f4f6;">
+<td style="padding:12px 16px; border:1px solid #d1d5db; width:120px;"><strong>v0.1 (MVP)</strong></td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;">IMAP ポーリング、シンプルな仕分け、Slack 投稿、添付アップロード、重複防止</td>
+</tr>
+<tr>
+<td style="padding:12px 16px; border:1px solid #d1d5db;"><strong>v0.2</strong></td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;">複合条件ルール、添付の OneDrive 保存リンク投稿、ヘルスチェック、エラー時の再試行</td>
+</tr>
+<tr style="background:#f3f4f6;">
+<td style="padding:12px 16px; border:1px solid #d1d5db;"><strong>v0.3</strong></td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;">ルール変更を Slack コマンドで簡易反映、週次統計レポート、未分類メール一覧</td>
+</tr>
+<tr>
+<td style="padding:12px 16px; border:1px solid #d1d5db;"><strong>v0.4</strong></td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;">AI による分類提案、リアクションでの再振り分け、ブラウザダッシュボード</td>
+</tr>
+</table>
+
+<p style="margin:8px 0; font-size:0.88em; color:#6b7280;">※ リリース時期は北大の情報セキュリティポリシー確認・パイロット教室の協力状況にあわせて決定します。</p>
+
+<h3 style="color:#1e4d8c; margin-top:32px;">よくある質問</h3>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">いつ頃リリース予定ですか?</summary>
+<p style="margin:8px 0 0;">現時点ではリリース時期は未定です。北大の情報セキュリティポリシー (メール内容を Slack に流すことの可否) を確認しつつ、パイロット協力教室と要件のすり合わせを行ったうえで開発を進める予定です。リリース情報は本ページにて告知します。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">個人情報や患者情報を含むメールの取り扱いは?</summary>
+<p style="margin:8px 0 0;">取り扱いには慎重に対応します。メール内容を Slack に流すこと自体の法的位置づけ・教室内ルールを事前に確認したうえで、必要に応じてキーワードベースで個人情報を含むメールを除外する設定を提供する予定です。導入前のヒアリングで具体的なルールをすり合わせます。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">bot が読んだメールは「既読」になりますか?</summary>
+<p style="margin:8px 0 0;">デフォルトでは <strong>未読のまま</strong> 残します。事務員が改めて目視確認したい場合に支障が出ないようにするためです。設定で「読み込み後に既読にする」「別フォルダに移動して仕分け済みを可視化する」などの動作も選べる予定です。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">仕分けに失敗したらどうなりますか?</summary>
+<p style="margin:8px 0 0;">どのルールにも当てはまらなかったメールは「未分類」チャンネルに流れます。事務員が見て必要なら手動転送し、頻出パターンならルールを追加する流れを想定しています。デフォルトを「投稿する」にすることで、見落としを防ぐ運用が可能です。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">パイロット導入を希望したい場合は?</summary>
+<p style="margin:8px 0 0;">本ページ下部のフォームからご連絡ください。具体的な業務状況をヒアリングし、開発スケジュールに反映します。パイロット協力教室には機能開発の優先順位や運用ルールの提案で発言権を持っていただきます。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">北大の MS 包括契約で使える Teams ではダメですか?</summary>
+<p style="margin:8px 0 0;">技術的には Teams 対応も可能ですが、現状は Slack 専用で開発しています。理由は (1) 教室管理者だけで App 導入が完結する自由度、(2) Bot 開発エコシステムの成熟度、(3) PRISM-HU 提供の他ツール (サブスク領収書ボット・リマインド自動化) との設計統一、です。Teams は北大本部 IT 室の管理権限下にあり、Bot 導入時に学内承認が必要なケースがあるため、教室レベルで完結する Slack を採用しています。</p>
+</details>
+
+<hr style="border:none; border-top:1px solid #d1d5db; margin:32px 0;">
+
+<!-- ===== 自動化リクエスト歓迎 (大きめハイライト) ===== -->
+<div style="background:linear-gradient(135deg, #1e4d8c 0%, #2d6cb8 100%); color:#fff; border-radius:12px; padding:28px 32px; margin:32px 0; box-shadow:0 4px 12px rgba(30,77,140,0.15);">
+
+<h3 style="margin:0 0 12px; color:#fff; font-size:1.3em; border:none;">「この業務、自動化できない?」のご相談を歓迎します</h3>
+
+<p style="margin:0 0 16px; font-size:1.05em; line-height:1.8;">
+本ページで紹介しているメール転送業務以外にも、教室の事務作業で <strong>「定型的だが手間がかかる」</strong> 作業があれば、ぜひお気軽にご相談ください。
+</p>
+
+<p style="margin:0 0 16px; font-size:0.95em; line-height:1.8;">
+業務内容を <strong>ヒアリング</strong>し、<strong>必要な機能を洗い出し</strong>、その教室に <strong>最適なシステムを組み立てます</strong>。既存ツールの組み合わせで実現できる場合もあれば、新規にツールを設計する場合もあります。
+</p>
+
+<p style="margin:0 0 16px; font-size:0.95em; line-height:1.8;">
+たとえば、以下のようなご相談を過去にいただいています:
+</p>
+
+<ul style="margin:0 0 18px; padding-left:24px; font-size:0.95em; line-height:1.9;">
+<li>月末の <strong>経費集計</strong>を Excel に転記する作業</li>
+<li>毎週同じメンバーへの <strong>定型連絡</strong> (会議案内・週報集約など)</li>
+<li>特定キーワードを含む <strong>メールの抽出・転送</strong></li>
+<li>Google フォーム回答の <strong>集計・要約 → Slack 通知</strong></li>
+<li>外部サイトの <strong>定期チェック</strong> (公募情報・締切リスト)</li>
+<li>カレンダーやタスク管理ツールとの <strong>連携</strong></li>
+</ul>
+
+<p style="margin:0 0 18px; font-size:0.95em; line-height:1.8;">
+業務内容を伺った上で、<strong>自動化の可否・難易度・想定スケジュール</strong>をご提案します。すぐに自動化できない場合でも、業務フロー改善のヒントになる場合があります。
+</p>
+
+<p style="margin:0;">
+<a href="https://forms.gle/9GhyAfjbKWVnyMFZ9" target="_blank" rel="noopener noreferrer" style="display:inline-block; padding:12px 24px; background:#fff; color:#1e4d8c; border-radius:8px; text-decoration:none; font-weight:700; font-size:1em;">ご相談フォームを開く →</a>
+</p>
+
+</div>
+
+<hr style="border:none; border-top:1px solid #d1d5db; margin:32px 0;">
+
+<h3 style="color:#1e4d8c;" id="apply">パイロット導入・事前相談のお申し込み</h3>
+<p>本ツールのリリース前パイロット導入のご相談、要件のすり合わせ、リリース情報の事前通知などをご希望の方は、<strong>上記のご相談フォーム</strong>からお問い合わせください。フォームの「ご相談内容」で <strong>「メール転送自動化」</strong>をお選びください。通常 <strong>5 営業日以内</strong> に PRISM-HU からご連絡します。</p>
+
+<hr style="border:none; border-top:1px solid #d1d5db; margin:32px 0;">
+
+<h3 style="color:#1e4d8c;">お問い合わせ</h3>
+<p>本ツールに関するご質問、業務フローでの利用可否の事前確認、その他のご相談など、お気軽にご連絡ください。</p>
+<p style="background:#f3f4f6; border-radius:8px; padding:14px 18px; font-size:0.95em;">
+<strong>PRISM-HU 事務局</strong><br>
+<a href="mailto:prism-hu-office@pop.med.hokudai.ac.jp" style="color:#1e4d8c;">prism-hu-office@pop.med.hokudai.ac.jp</a><br>
+<span style="font-size:0.85em; color:#6b7280;">件名に「メール転送自動化」と記載いただけるとスムーズです。</span>
+</p>
+
+</div>

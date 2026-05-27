@@ -1,0 +1,183 @@
+<!--
+  事務作業自動化 ハブページ
+  WordPress の「固定ページ」→「新規追加」→ エディタを「カスタムHTML」モードにして貼り付け
+  ※ 各ツールの詳細ページ URL は WordPress の固定ページ URL に差し替えてください
+    - SUBSC_RECEIPT_BOT_URL  → subsc-receipt-bot 案内ページ
+    - RESEARCH_REPORT_URL    → リマインド自動化 案内ページ
+    - MAIL_TRIAGE_BOT_URL    → メール転送自動化 案内ページ (Coming Soon)
+-->
+
+<div style="max-width:800px; margin:0 auto; font-family:inherit; line-height:1.8; color:#333;">
+
+<h2 style="border-bottom:3px solid #1e4d8c; padding-bottom:8px; color:#1e4d8c;">事務作業自動化</h2>
+
+<p style="font-size:1.05em; color:#555; margin-bottom:24px;">
+研究室の <strong>毎月・毎日の小さな手作業</strong> を Slack や常駐機材に任せる、PRISM-HU の自動化ツール群です。<br>
+それぞれの教室で必要なものから、1 つずつ導入できます。
+</p>
+
+<div style="background:#e8f0fb; border-left:4px solid #1e4d8c; border-radius:8px; padding:18px 22px; margin-bottom:32px;">
+<h3 style="margin:0 0 8px; font-size:1em; color:#1e4d8c;">こんなお悩みはありませんか?</h3>
+<ul style="margin:0; padding-left:20px;">
+<li>サブスクの領収書が毎月届き、立替払請求書の作成・印刷に時間を取られている</li>
+<li>科研費・助成金の達成度報告など、月次・年次の <strong>提出期限を忘れる</strong> ことがある</li>
+<li>事務代表アドレスに大量に届くメールから、教室メンバーに必要なものを <strong>手動で転送</strong> している</li>
+</ul>
+<p style="margin:12px 0 0; font-size:0.9em; color:#555;">これらは、定型的だが手間のかかる作業として、研究教育時間を圧迫しがちです。PRISM-HU では順次自動化ツールを整備しています。</p>
+</div>
+
+<h3 style="color:#1e4d8c; margin-top:32px;">自動化ツール一覧</h3>
+
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin:20px 0;">
+
+  <!-- ───── 1. subsc-receipt-bot ───── -->
+  <div style="border:1px solid #d1d5db; border-radius:8px; padding:18px 20px; background:#fff; display:flex; flex-direction:column;">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+      <span style="font-size:1.5em;">🧾</span>
+      <span style="background:#dcfce7; color:#15803d; font-size:0.75em; padding:3px 10px; border-radius:12px; font-weight:600;">稼働中</span>
+    </div>
+    <h4 style="margin:0 0 8px; color:#1e4d8c; font-size:1.05em;">サブスク領収書ボット</h4>
+    <p style="margin:0 0 12px; font-size:0.92em; color:#555; flex-grow:1;">
+      ChatGPT・Claude・Google AI などのサブスクリプション領収書を Slack に投稿するだけで、リネーム保存・立替払請求書 (様式第12号) 作成・プリンタ印刷までを自動実行します。
+    </p>
+    <p style="margin:0 0 12px; font-size:0.82em; color:#6b7280;">
+      <strong>導入対象:</strong> サブスク利用が複数人・継続的な教室<br>
+      <strong>必要なもの:</strong> 教室内 macOS 機材・プリンタ・Slack
+    </p>
+    <p style="margin:0;">
+      <a href="SUBSC_RECEIPT_BOT_URL" style="display:inline-block; padding:8px 16px; background:#1e4d8c; color:#fff; border-radius:6px; text-decoration:none; font-weight:600; font-size:0.9em;">詳細を見る →</a>
+    </p>
+  </div>
+
+  <!-- ───── 2. research-report (リマインド自動化) ───── -->
+  <div style="border:1px solid #d1d5db; border-radius:8px; padding:18px 20px; background:#fff; display:flex; flex-direction:column;">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+      <span style="font-size:1.5em;">📅</span>
+      <span style="background:#dcfce7; color:#15803d; font-size:0.75em; padding:3px 10px; border-radius:12px; font-weight:600;">稼働中</span>
+    </div>
+    <h4 style="margin:0 0 8px; color:#1e4d8c; font-size:1.05em;">リマインド自動化</h4>
+    <p style="margin:0 0 12px; font-size:0.92em; color:#555; flex-grow:1;">
+      科研費・助成金の達成度報告など、月次・年次の提出期限を Slack に自動投稿。担当者ごとの提出状況を集約し、未提出者にも個別リマインドできます。
+    </p>
+    <p style="margin:0 0 12px; font-size:0.82em; color:#6b7280;">
+      <strong>導入対象:</strong> 定期的な報告・締切管理がある教室<br>
+      <strong>必要なもの:</strong> Slack ワークスペース (常駐機材不要)
+    </p>
+    <p style="margin:0;">
+      <a href="RESEARCH_REPORT_URL" style="display:inline-block; padding:8px 16px; background:#1e4d8c; color:#fff; border-radius:6px; text-decoration:none; font-weight:600; font-size:0.9em;">詳細を見る →</a>
+    </p>
+  </div>
+
+  <!-- ───── 3. mail-triage-bot ───── -->
+  <div style="border:1px solid #d1d5db; border-radius:8px; padding:18px 20px; background:#fff; display:flex; flex-direction:column;">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+      <span style="font-size:1.5em;">📧</span>
+      <span style="background:#fef3c7; color:#92400e; font-size:0.75em; padding:3px 10px; border-radius:12px; font-weight:600;">開発中</span>
+    </div>
+    <h4 style="margin:0 0 8px; color:#1e4d8c; font-size:1.05em;">メール転送自動化</h4>
+    <p style="margin:0 0 12px; font-size:0.92em; color:#555; flex-grow:1;">
+      事務代表アドレスに届く大量のメールを、送信者・件名・本文のルールで仕分けして Slack の対応チャンネルに自動投稿。事務員の手動転送業務を削減します。
+    </p>
+    <p style="margin:0 0 12px; font-size:0.82em; color:#6b7280;">
+      <strong>導入対象:</strong> 事務代表アドレスを運用する教室<br>
+      <strong>必要なもの:</strong> 教室内 macOS 機材・Slack
+    </p>
+    <p style="margin:0;">
+      <a href="MAIL_TRIAGE_BOT_URL" style="display:inline-block; padding:8px 16px; background:#9ca3af; color:#fff; border-radius:6px; text-decoration:none; font-weight:600; font-size:0.9em;">詳細を見る (準備中) →</a>
+    </p>
+  </div>
+
+</div>
+
+<h3 style="color:#1e4d8c; margin-top:32px;">共通の特長</h3>
+
+<table style="width:100%; border-collapse:collapse; margin:16px 0;">
+<tr style="background:#f3f4f6;">
+<td style="padding:12px 16px; border:1px solid #d1d5db; width:30%;"><strong>段階的導入</strong></td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;">必要な機能から 1 つずつ。最初は領収書ボットだけ、慣れたら順次追加できます。</td>
+</tr>
+<tr>
+<td style="padding:12px 16px; border:1px solid #d1d5db;"><strong>同じ運用パターン</strong></td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;">どのツールも Slack を通じて操作・通知。複数ツールを使っても、教室管理者が覚えることは最小限です。</td>
+</tr>
+<tr style="background:#f3f4f6;">
+<td style="padding:12px 16px; border:1px solid #d1d5db;"><strong>PRISM-HU が遠隔メンテ</strong></td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;">技術的な保守・アップデートは PRISM-HU が引き受け。教室は日常運用に集中できます。</td>
+</tr>
+<tr>
+<td style="padding:12px 16px; border:1px solid #d1d5db;"><strong>教室側でご用意いただくもの</strong></td>
+<td style="padding:12px 16px; border:1px solid #d1d5db;">ツールによって異なりますが、常駐機材 (Mac mini など)・プリンタ・Slack ワークスペース等を教室にてご用意いただきます。詳細は各ツールの案内ページをご確認ください。</td>
+</tr>
+</table>
+
+<h3 style="color:#1e4d8c; margin-top:32px;">よくある質問</h3>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">3 つすべてを導入する必要がありますか?</summary>
+<p style="margin:8px 0 0;">いいえ、必要なものを 1 つずつ選んで導入できます。教室の事務負担に合わせて、最も効果が高そうなものから始めてください。各ツールは独立して動作します。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">複数ツールを同じ常駐機材で動かせますか?</summary>
+<p style="margin:8px 0 0;">はい。サブスク領収書ボットとメール転送自動化は同じ常駐機材 (例: Mac mini 1 台) に同居できます。リマインド自動化は常駐機材不要 (クラウド実行) なので、機材なしの教室でも利用可能です。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">Slack を導入していない教室でも使えますか?</summary>
+<p style="margin:8px 0 0;">Slack の導入支援も含めてご相談ください。事務的にはワークスペース作成 + 教室全員の招待 + 運用ルール策定 の 3 段階で、2〜3 日程度の準備が必要です。Slack 自体が他の業務 (連絡・資料共有等) でも便利になるため、自動化以外の効果も期待できます。</p>
+</details>
+
+<details style="margin-bottom:12px; border:1px solid #d1d5db; border-radius:8px; padding:12px 16px;">
+<summary style="cursor:pointer; font-weight:bold; color:#1e4d8c;">他にも自動化したい業務があります。相談できますか?</summary>
+<p style="margin:8px 0 0;">はい、ぜひお寄せください。「定型的だが手間がかかる作業」であれば、自動化候補として検討できます。今後ツールが増えれば本ページにも追加していきます。</p>
+</details>
+
+<hr style="border:none; border-top:1px solid #d1d5db; margin:32px 0;">
+
+<!-- ===== 自動化リクエスト歓迎 (大きめハイライト) ===== -->
+<div style="background:linear-gradient(135deg, #1e4d8c 0%, #2d6cb8 100%); color:#fff; border-radius:12px; padding:28px 32px; margin:32px 0; box-shadow:0 4px 12px rgba(30,77,140,0.15);">
+
+<h3 style="margin:0 0 12px; color:#fff; font-size:1.3em; border:none;">「この業務、自動化できない?」のご相談を歓迎します</h3>
+
+<p style="margin:0 0 16px; font-size:1.05em; line-height:1.8;">
+本ページで紹介している 3 つのツール以外にも、教室の事務作業で <strong>「定型的だが手間がかかる」</strong> 作業があれば、ぜひお気軽にご相談ください。
+</p>
+
+<p style="margin:0 0 16px; font-size:0.95em; line-height:1.8;">
+業務内容を <strong>ヒアリング</strong>し、<strong>必要な機能を洗い出し</strong>、その教室に <strong>最適なシステムを組み立てます</strong>。既存ツールの組み合わせで実現できる場合もあれば、新規にツールを設計する場合もあります。
+</p>
+
+<p style="margin:0 0 16px; font-size:0.95em; line-height:1.8;">
+たとえば、以下のようなご相談を過去にいただいています:
+</p>
+
+<ul style="margin:0 0 18px; padding-left:24px; font-size:0.95em; line-height:1.9;">
+<li>月末の <strong>経費集計</strong>を Excel に転記する作業</li>
+<li>毎週同じメンバーへの <strong>定型連絡</strong> (会議案内・週報集約など)</li>
+<li>特定キーワードを含む <strong>メールの抽出・転送</strong></li>
+<li>Google フォーム回答の <strong>集計・要約 → Slack 通知</strong></li>
+<li>外部サイトの <strong>定期チェック</strong> (公募情報・締切リスト)</li>
+<li>カレンダーやタスク管理ツールとの <strong>連携</strong></li>
+</ul>
+
+<p style="margin:0 0 18px; font-size:0.95em; line-height:1.8;">
+業務内容を伺った上で、<strong>自動化の可否・難易度・想定スケジュール</strong>をご提案します。すぐに自動化できない場合でも、業務フロー改善のヒントになる場合があります。
+</p>
+
+<p style="margin:0;">
+<a href="https://forms.gle/9GhyAfjbKWVnyMFZ9" target="_blank" rel="noopener noreferrer" style="display:inline-block; padding:12px 24px; background:#fff; color:#1e4d8c; border-radius:8px; text-decoration:none; font-weight:700; font-size:1em;">ご相談フォームを開く →</a>
+</p>
+
+</div>
+
+<hr style="border:none; border-top:1px solid #d1d5db; margin:32px 0;">
+
+<h3 style="color:#1e4d8c;">お問い合わせ</h3>
+<p>導入のご相談、現在の業務フローでの利用可否、新規ツールのリクエストなど、お気軽にご連絡ください。</p>
+<p style="background:#f3f4f6; border-radius:8px; padding:14px 18px; font-size:0.95em;">
+<strong>PRISM-HU 事務局</strong><br>
+<a href="mailto:prism-hu-office@pop.med.hokudai.ac.jp" style="color:#1e4d8c;">prism-hu-office@pop.med.hokudai.ac.jp</a><br>
+<span style="font-size:0.85em; color:#6b7280;">件名に「事務作業自動化」と記載いただけるとスムーズです。</span>
+</p>
+
+</div>
