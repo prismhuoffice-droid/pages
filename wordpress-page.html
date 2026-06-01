@@ -1,0 +1,960 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRISM meetSync | PRISM-HU</title>
+<!--
+  PRISM meetSync 案内ページ
+  WordPress の「固定ページ」→「新規追加」→ エディタを「カスタムHTML」モードにして貼り付け。
+
+  ■ 公開前に必要に応じて置換するURL/画像:
+    meetSynclogo-clean.png   … ヒーロー・フッター用ロゴ画像（格子背景なし）
+    meetSyncfav.png          … ファビコン画像
+    manual-operator-wp.html  … 運営担当者マニュアル固定ページURLに置換
+    ../index.html            … 事務支援トップ固定ページURLに置換
+    ../office-automation/automation_info.html … 事務作業自動化 事例紹介固定ページURLに置換
+    GoogleフォームURL        … お申し込みフォーム
+
+  CSS/JS は #prism-meetsync 配下にスコープ済み。
+  ファビコンは script で document.head に link rel="icon" を追加します。
+-->
+
+<div id="prism-meetsync" data-favicon="meetSyncfav.png">
+  <style>
+    #prism-meetsync {
+      --navy:#1e4d8c;
+      --navy-dark:#143a6d;
+      --ink:#1f2937;
+      --muted:#64748b;
+      --line:#d7dde7;
+      --line-soft:#e8edf4;
+      --bg-soft:#f7f9fc;
+      --blue-soft:#e8f0fb;
+      --green:#0f766e;
+      --gold:#a16207;
+      box-sizing:border-box;
+      max-width:1080px;
+      margin:0 auto;
+      padding:0 24px 48px;
+      background:#fff;
+      color:var(--ink);
+      font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+      line-height:1.85;
+    }
+
+    #prism-meetsync *,
+    #prism-meetsync *::before,
+    #prism-meetsync *::after {
+      box-sizing:border-box;
+    }
+
+    #prism-meetsync p {
+      margin-top:0;
+    }
+
+    #prism-meetsync a,
+    #prism-meetsync button,
+    #prism-meetsync summary {
+      font:inherit;
+    }
+
+    #prism-meetsync .sr-only {
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+
+    #prism-meetsync .hero {
+      display:grid;
+      grid-template-columns:minmax(0, .92fr) minmax(360px, 1.08fr);
+      gap:28px 34px;
+      align-items:center;
+      border-top:1px solid var(--line-soft);
+      border-bottom:1px solid var(--line-soft);
+      padding:28px 0 30px;
+    }
+
+    #prism-meetsync .hero-kicker,
+    #prism-meetsync .section-kicker {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin:0 0 10px;
+      color:var(--navy);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.08em;
+    }
+
+    #prism-meetsync .hero-kicker::before,
+    #prism-meetsync .section-kicker::before {
+      content:"";
+      width:28px;
+      height:2px;
+      border-radius:999px;
+      background:var(--navy);
+    }
+
+    #prism-meetsync .hero-title {
+      margin:0;
+      color:var(--navy-dark);
+      font-size:42px;
+      font-weight:800;
+      line-height:1.2;
+      letter-spacing:0;
+    }
+
+    #prism-meetsync .hero-lead {
+      margin:16px 0 0;
+      color:var(--ink);
+      font-size:16px;
+      line-height:1.95;
+    }
+
+    #prism-meetsync .hero-actions {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:22px;
+    }
+
+    #prism-meetsync .button {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      min-height:44px;
+      border:1.5px solid var(--navy);
+      border-radius:8px;
+      padding:9px 16px;
+      background:#fff;
+      color:var(--navy);
+      font-size:14px;
+      font-weight:800;
+      text-decoration:none;
+      transition:background .16s ease, color .16s ease, border-color .16s ease;
+    }
+
+    #prism-meetsync .button.primary {
+      background:var(--navy);
+      color:#fff;
+    }
+
+    #prism-meetsync .button:hover,
+    #prism-meetsync .button:focus-visible {
+      background:var(--navy-dark);
+      border-color:var(--navy-dark);
+      color:#fff;
+      outline:none;
+    }
+
+    #prism-meetsync .arrow {
+      display:inline-grid;
+      place-items:center;
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      background:currentColor;
+      color:#fff;
+      font-size:11px;
+      line-height:1;
+    }
+
+    #prism-meetsync .button.primary .arrow {
+      background:#fff;
+      color:var(--navy);
+    }
+
+    #prism-meetsync .hero-media {
+      margin:0;
+      align-self:center;
+    }
+
+    #prism-meetsync .hero-media img {
+      display:block;
+      width:100%;
+      max-height:360px;
+      height:auto;
+      object-fit:contain;
+      border:1px solid var(--line-soft);
+      border-radius:8px;
+      box-shadow:0 14px 32px rgba(15,23,42,.10);
+    }
+
+    #prism-meetsync .pain-lead {
+      position:relative;
+      margin:24px 0 0;
+      border-top:1px solid var(--line-soft);
+      border-bottom:1px solid var(--line-soft);
+      padding:22px 0 24px 20px;
+    }
+
+    #prism-meetsync .pain-lead::before {
+      content:"";
+      position:absolute;
+      left:0;
+      top:22px;
+      bottom:24px;
+      width:4px;
+      border-radius:999px;
+      background:linear-gradient(180deg, #6aa6f0 0%, #7bd1b0 55%, #f4a6c0 100%);
+    }
+
+    #prism-meetsync .pain-lead h2 {
+      margin:0 0 10px;
+      color:var(--navy-dark);
+      font-size:24px;
+      font-weight:800;
+      line-height:1.55;
+    }
+
+    #prism-meetsync .pain-lead p {
+      max-width:920px;
+      margin:0;
+      color:var(--ink);
+      font-size:15px;
+      line-height:1.95;
+    }
+
+    #prism-meetsync .pain-lead p + p {
+      margin-top:10px;
+    }
+
+    #prism-meetsync .anchor-nav {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:24px 0 0;
+      padding:0;
+      list-style:none;
+    }
+
+    #prism-meetsync .anchor-nav a {
+      display:inline-flex;
+      align-items:center;
+      min-height:38px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:7px 13px;
+      background:#fff;
+      color:var(--ink);
+      font-size:14px;
+      font-weight:800;
+      text-decoration:none;
+    }
+
+    #prism-meetsync .anchor-nav a:hover,
+    #prism-meetsync .anchor-nav a:focus-visible {
+      border-color:var(--navy);
+      color:var(--navy);
+      outline:none;
+    }
+
+    #prism-meetsync .section {
+      margin-top:40px;
+    }
+
+    #prism-meetsync .section-head {
+      max-width:780px;
+      margin-bottom:18px;
+    }
+
+    #prism-meetsync h2,
+    #prism-meetsync h3 {
+      color:var(--navy-dark);
+      letter-spacing:0;
+    }
+
+    #prism-meetsync h2 {
+      margin:0;
+      font-size:26px;
+      font-weight:800;
+      line-height:1.45;
+    }
+
+    #prism-meetsync .section-head p {
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    #prism-meetsync .feature-grid,
+    #prism-meetsync .option-grid,
+    #prism-meetsync .target-grid {
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:16px;
+    }
+
+    #prism-meetsync .feature,
+    #prism-meetsync .option,
+    #prism-meetsync .target-box,
+    #prism-meetsync .contact-box {
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:18px;
+      background:#fff;
+      box-shadow:0 8px 24px rgba(15,23,42,.05);
+    }
+
+    #prism-meetsync .feature h3,
+    #prism-meetsync .option h3,
+    #prism-meetsync .target-box h3 {
+      margin:0 0 8px;
+      font-size:17px;
+      font-weight:800;
+    }
+
+    #prism-meetsync .feature p,
+    #prism-meetsync .option p,
+    #prism-meetsync .target-box p {
+      margin:0;
+      color:var(--ink);
+      font-size:14px;
+    }
+
+    #prism-meetsync .chip {
+      display:inline-flex;
+      align-items:center;
+      min-height:26px;
+      margin-bottom:10px;
+      border:1px solid var(--line-soft);
+      border-radius:8px;
+      padding:2px 8px;
+      background:var(--bg-soft);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+    }
+
+    #prism-meetsync .note {
+      margin:12px 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    #prism-meetsync .gallery {
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:16px;
+      background:#fff;
+      box-shadow:0 8px 24px rgba(15,23,42,.05);
+    }
+
+    #prism-meetsync .screen-tabs {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:0 0 14px;
+    }
+
+    #prism-meetsync .screen-tab {
+      min-height:38px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:7px 13px;
+      background:#fff;
+      color:var(--ink);
+      cursor:pointer;
+      font-size:14px;
+      font-weight:800;
+    }
+
+    #prism-meetsync .screen-tab.is-active {
+      border-color:var(--navy);
+      background:var(--navy);
+      color:#fff;
+    }
+
+    #prism-meetsync .screen-panel {
+      display:none;
+      grid-template-columns:minmax(0, 1.25fr) minmax(260px, .75fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    #prism-meetsync .screen-panel.is-active {
+      display:grid;
+    }
+
+    #prism-meetsync .screen-panel img {
+      display:block;
+      width:100%;
+      height:auto;
+      border:1px solid var(--line-soft);
+      border-radius:8px;
+    }
+
+    #prism-meetsync .screen-caption {
+      border-left:4px solid var(--navy);
+      padding-left:14px;
+    }
+
+    #prism-meetsync .screen-caption h3 {
+      margin:0 0 8px;
+      font-size:18px;
+      font-weight:800;
+    }
+
+    #prism-meetsync .screen-caption p {
+      margin:0;
+      color:var(--ink);
+      font-size:14px;
+    }
+
+    #prism-meetsync .steps {
+      display:grid;
+      gap:12px;
+      margin:0;
+      padding:0;
+      list-style:none;
+      counter-reset:step;
+    }
+
+    #prism-meetsync .steps li {
+      position:relative;
+      counter-increment:step;
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:16px 18px 16px 62px;
+      background:#fff;
+    }
+
+    #prism-meetsync .steps li::before {
+      content:counter(step);
+      position:absolute;
+      left:18px;
+      top:18px;
+      display:grid;
+      place-items:center;
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      background:var(--blue-soft);
+      color:var(--navy);
+      font-weight:800;
+    }
+
+    #prism-meetsync .steps h3 {
+      margin:0 0 4px;
+      font-size:17px;
+      font-weight:800;
+    }
+
+    #prism-meetsync .steps p {
+      margin:0;
+      font-size:14px;
+    }
+
+    #prism-meetsync .target-grid {
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+    }
+
+    #prism-meetsync .target-box ul {
+      margin:0;
+      padding-left:20px;
+      font-size:14px;
+    }
+
+    #prism-meetsync .faq-list {
+      display:grid;
+      gap:10px;
+    }
+
+    #prism-meetsync details {
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:#fff;
+    }
+
+    #prism-meetsync summary {
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      cursor:pointer;
+      padding:14px 16px;
+      color:var(--navy-dark);
+      font-weight:800;
+      list-style:none;
+    }
+
+    #prism-meetsync summary::-webkit-details-marker {
+      display:none;
+    }
+
+    #prism-meetsync summary::after {
+      content:"+";
+      display:inline-grid;
+      place-items:center;
+      flex:none;
+      width:24px;
+      height:24px;
+      border:1px solid var(--line);
+      border-radius:50%;
+      color:var(--navy);
+      line-height:1;
+    }
+
+    #prism-meetsync details[open] summary::after {
+      content:"-";
+    }
+
+    #prism-meetsync details p,
+    #prism-meetsync details ol {
+      margin:0;
+      padding:0 16px 16px;
+      font-size:14px;
+    }
+
+    #prism-meetsync .policy ol {
+      padding-left:38px;
+    }
+
+    #prism-meetsync .policy li + li {
+      margin-top:10px;
+    }
+
+    #prism-meetsync .cta-band {
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) auto;
+      gap:18px;
+      align-items:center;
+      margin-top:36px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:22px;
+      background:var(--blue-soft);
+    }
+
+    #prism-meetsync .cta-band h2 {
+      margin:0 0 6px;
+      font-size:22px;
+    }
+
+    #prism-meetsync .cta-band p {
+      margin:0;
+      font-size:14px;
+    }
+
+    #prism-meetsync .contact-box {
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) auto;
+      gap:18px;
+      align-items:center;
+      margin-top:16px;
+    }
+
+    #prism-meetsync .contact-box p {
+      margin:0;
+      font-size:14px;
+    }
+
+    #prism-meetsync .contact-box a {
+      color:var(--navy);
+      font-weight:800;
+    }
+
+    #prism-meetsync .footer-logo {
+      margin:36px 0 8px;
+      text-align:center;
+    }
+
+    #prism-meetsync .footer-logo img {
+      display:inline-block;
+      width:220px;
+      max-width:60%;
+      height:auto;
+      opacity:.9;
+    }
+
+    @media (max-width:860px) {
+      #prism-meetsync .hero,
+      #prism-meetsync .screen-panel,
+      #prism-meetsync .cta-band,
+      #prism-meetsync .contact-box {
+        grid-template-columns:1fr;
+      }
+
+      #prism-meetsync .feature-grid,
+      #prism-meetsync .option-grid {
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+      }
+
+    }
+
+    @media (max-width:560px) {
+      #prism-meetsync {
+        padding:0 18px 40px;
+      }
+
+      #prism-meetsync .hero {
+        padding-top:22px;
+      }
+
+      #prism-meetsync .hero-title {
+        font-size:34px;
+      }
+
+      #prism-meetsync .hero-actions .button,
+      #prism-meetsync .cta-band .button {
+        width:100%;
+      }
+
+      #prism-meetsync .feature-grid,
+      #prism-meetsync .option-grid,
+      #prism-meetsync .target-grid {
+        grid-template-columns:1fr;
+      }
+
+      #prism-meetsync .pain-lead {
+        padding:20px 0 22px 18px;
+      }
+
+      #prism-meetsync .screen-tab {
+        flex:1 1 calc(50% - 4px);
+      }
+    }
+  </style>
+
+  <section class="hero" aria-labelledby="meetsync-title">
+    <div>
+      <p class="hero-kicker">PRISM-HU 事務支援</p>
+      <h1 class="hero-title" id="meetsync-title">PRISM meetSync</h1>
+      <p class="hero-lead">
+        教室・研究室の会議日程調整を、1つのURLで完結できるWebツールです。
+        重要な先生方の予定を先に確認してから全参加者へ打診する、といった複雑な調整もウィザード形式で進められます。
+      </p>
+      <div class="hero-actions">
+        <a class="button primary" href="#apply">お申し込みへ<span class="arrow">›</span></a>
+        <a class="button" href="#screens">画面を見る<span class="arrow">›</span></a>
+        <a class="button" href="manual-operator-wp.html">マニュアル<span class="arrow">›</span></a>
+      </div>
+    </div>
+    <figure class="hero-media">
+      <img src="meetSynclogo-clean.png" alt="PRISM meetSync">
+    </figure>
+  </section>
+
+  <section class="pain-lead" aria-labelledby="meetsync-pain-title">
+    <h2 id="meetsync-pain-title">こんな日程調整で困っていませんか？</h2>
+    <p>
+      会議の日程調整は、思った以上に手間がかかります。TONTONでまず教授の都合を聞き、次に准教授、さらに出席者十数名の出欠を確認し、候補日を絞り、確定メールと前日リマインドを送り、欠席者の資料も集める。何度もメールやフォームを行き来しているうちに、いま誰の回答待ちなのかも見えにくくなります。
+    </p>
+    <p>
+      PRISM meetSync（ミートシンク）は、こうした段階的な調整業務を1つのツールで完結させるシステムです。共有のポータルURLから、運営担当者も参加者も調整の進捗、確定した日程、資料共有の状況を確認できます。
+    </p>
+  </section>
+
+  <nav aria-label="ページ内メニュー">
+    <ul class="anchor-nav">
+      <li><a href="#features">基本機能</a></li>
+      <li><a href="#options">オプション</a></li>
+      <li><a href="#screens">画面イメージ</a></li>
+      <li><a href="#flow">利用の流れ</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#apply">お申し込み</a></li>
+    </ul>
+  </nav>
+
+  <section class="section" id="features">
+    <div class="section-head">
+      <p class="section-kicker">BASIC</p>
+      <h2>日程調整の面倒な往復を、ひとつの流れにまとめます。</h2>
+      <p>運営担当者の設定、参加者の回答、日程確定後の通知までを、教室単位で扱いやすくします。</p>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature">
+        <span class="chip">段階確認</span>
+        <h3>重要な先生方から先に確認</h3>
+        <p>まず少人数の都合を確認し、候補を絞ってから全参加者へ出欠を打診できます。</p>
+      </div>
+      <div class="feature">
+        <span class="chip">回答</span>
+        <h3>URLを開いて ○ △ × を選ぶだけ</h3>
+        <p>参加者はアカウント登録なしで回答できます。コメント欄もあるため、遅刻や条件付き参加も拾えます。</p>
+      </div>
+      <div class="feature">
+        <span class="chip">通知</span>
+        <h3>確定通知と前日リマインドを自動送信</h3>
+        <p>日程確定後の連絡と前日案内を自動化し、メールの送り忘れを防ぎます。</p>
+      </div>
+      <div class="feature">
+        <span class="chip">資料</span>
+        <h3>会議ごとの共有フォルダを作成</h3>
+        <p>Google Drive に会議単位の資料フォルダを作成し、資料アップロード案内にも対応します。</p>
+      </div>
+      <div class="feature">
+        <span class="chip">テンプレート</span>
+        <h3>参加者構成を保存</h3>
+        <p>定例会議のメンバーをテンプレート化し、毎回の設定作業を減らします。</p>
+      </div>
+      <div class="feature">
+        <span class="chip">管理</span>
+        <h3>複数会議を並行管理</h3>
+        <p>会議ごとの状態を一覧で確認し、調整中・確定済みの会議をまとめて扱えます。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="options">
+    <div class="section-head">
+      <p class="section-kicker">OPTIONS</p>
+      <h2>必要な機能だけ、会議に合わせて追加できます。</h2>
+      <p>使わない機能は表示されません。教室の運用に合わせて、最小構成から始められます。</p>
+    </div>
+
+    <div class="option-grid">
+      <div class="option">
+        <h3>通知専用アドレス</h3>
+        <p>調整には参加しないが、決定した日程と前日リマインダーだけ受け取ってほしい相手を登録できます。</p>
+      </div>
+      <div class="option">
+        <h3>資料アップロード案内</h3>
+        <p>確定通知メール・前日リマインダーに参加者ごとの個人URLを記載し、資料提出を集められます。</p>
+      </div>
+      <div class="option">
+        <h3>Google Meet URL の自動配信</h3>
+        <p>前日リマインダーメールにオンライン会議URLを自動掲載できます。</p>
+      </div>
+      <div class="option">
+        <h3>Slack 通知</h3>
+        <p>日程確定時に指定チャンネルへ、不参加者やコメント一覧つきで通知できます。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="screens">
+    <div class="section-head">
+      <p class="section-kicker">SCREENS</p>
+      <h2>実際の画面イメージ</h2>
+      <p>運営担当者側と参加者側の主な画面を抜粋しています。</p>
+    </div>
+
+    <div class="gallery">
+      <div class="screen-tabs" role="tablist" aria-label="画面イメージの切り替え">
+        <button type="button" class="screen-tab is-active" role="tab" aria-selected="true" data-screen="admin">管理画面</button>
+        <button type="button" class="screen-tab" role="tab" aria-selected="false" data-screen="voter">回答画面</button>
+        <button type="button" class="screen-tab" role="tab" aria-selected="false" data-screen="summary">集計</button>
+        <button type="button" class="screen-tab" role="tab" aria-selected="false" data-screen="mail">確定通知</button>
+      </div>
+
+      <div class="screen-panel is-active" data-screen-panel="admin" role="tabpanel">
+        <img src="screenshots/01-meeting-list.png" alt="会議一覧の管理画面">
+        <div class="screen-caption">
+          <h3>運営担当者の管理画面</h3>
+          <p>複数の会議をカード型メニューで並行管理できます。調整中、確定済みなどの状態が一目でわかります。</p>
+        </div>
+      </div>
+
+      <div class="screen-panel" data-screen-panel="voter" role="tabpanel">
+        <img src="screenshots/11-voter-form.png" alt="参加者の出欠回答画面">
+        <div class="screen-caption">
+          <h3>参加者の出欠回答画面</h3>
+          <p>参加者はメールに届いたURLを開き、○ △ × を選ぶだけ。Google等のアカウント登録は不要です。</p>
+        </div>
+      </div>
+
+      <div class="screen-panel" data-screen-panel="summary" role="tabpanel">
+        <img src="screenshots/12-voting-tab.png" alt="出欠確認タブの集計画面">
+        <div class="screen-caption">
+          <h3>回答状況の集計</h3>
+          <p>誰が出席可能で、誰が欠席かを一覧で確認できます。参加者コメントも同じ画面で拾えます。</p>
+        </div>
+      </div>
+
+      <div class="screen-panel" data-screen-panel="mail" role="tabpanel">
+        <img src="screenshots/14-confirm-email.png" alt="確定通知メール本文">
+        <div class="screen-caption">
+          <h3>確定通知メール</h3>
+          <p>日程が確定すると、参加者全員へ資料アップロードURL付きの通知メールを自動送信できます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="flow">
+    <div class="section-head">
+      <p class="section-kicker">FLOW</p>
+      <h2>利用開始までの流れ</h2>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <h3>お申し込み</h3>
+        <p>下記フォームからお申し込みください。Google アカウントの作成代行も承ります。</p>
+      </li>
+      <li>
+        <h3>セットアップ</h3>
+        <p>PRISM-HU のシステム管理者がシステムを構築し、運営担当者用のURLをお渡しします。</p>
+      </li>
+      <li>
+        <h3>初期設定</h3>
+        <p>運営担当者がURLにアクセスし、ウィザードに沿って組織名・参加者を登録します。</p>
+      </li>
+      <li>
+        <h3>運用開始</h3>
+        <p>会議を作成し、参加者に打診メールを送信。回答集計・日程確定・リマインドまで自動で行われます。</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="section">
+    <div class="target-grid">
+      <div class="target-box">
+        <h3>対象</h3>
+        <ul>
+          <li>北海道大学の教室・研究室・プロジェクトチーム</li>
+          <li>定期的な会議の日程調整に手間がかかっている方</li>
+          <li>メールのやり取りを減らしたい運営担当者の方</li>
+        </ul>
+      </div>
+      <div class="target-box">
+        <h3>必要なもの</h3>
+        <p>研究室・教室の <strong>Google アカウント（Gmail）</strong> が必要です。アカウントの作成代行も承ります。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="section-head">
+      <p class="section-kicker">FAQ</p>
+      <h2>よくある質問</h2>
+    </div>
+
+    <div class="faq-list">
+      <details>
+        <summary>参加者は Google アカウントが必要ですか？</summary>
+        <p>いいえ。参加者はメールで届くURLをクリックするだけで回答できます。ログインは不要です。</p>
+      </details>
+      <details>
+        <summary>1つの教室で複数の会議を並行して調整できますか？</summary>
+        <p>はい。会議ごとに独立して管理でき、テンプレートを使って素早く新しい会議を作成できます。</p>
+      </details>
+      <details>
+        <summary>途中で参加者を追加・削除できますか？</summary>
+        <p>はい。調整中でも運営担当者が管理画面から自由にメンバーを変更できます。</p>
+      </details>
+      <details>
+        <summary>データはどこに保存されますか？</summary>
+        <p>お申し込み時に用意する Google アカウントの Google スプレッドシートに保存されます。他の教室からはアクセスできません。</p>
+      </details>
+      <details>
+        <summary>Slack 通知は必須ですか？</summary>
+        <p>いいえ。Slack を使っていない教室では設定不要です。Slack を使う教室は、Incoming Webhook URL を1度だけ登録すれば、日程確定時に指定チャンネルへ自動投稿されます。</p>
+      </details>
+      <details>
+        <summary>資料のアップロードはどのように行いますか？</summary>
+        <p>参加者には自分専用のURLがメールで届きます。そのURLからファイルを直接アップロードできます。アップロードされた資料は会議ごとの Google Drive フォルダに自動整理されます。</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="section">
+    <details class="policy">
+      <summary>ご利用にあたって</summary>
+      <ol>
+        <li><strong>サービスの提供</strong><br>PRISM meetSync は、PRISM-HU が北海道大学の教室・研究室向けに無償で提供する会議日程調整ツールです。</li>
+        <li><strong>データの管理</strong><br>会議データは、お申し込み時にご用意いただく Google アカウントの Google スプレッドシートおよび Google Drive 内に保存されます。</li>
+        <li><strong>運営担当者の責任</strong><br>運営担当者用URLには会議の作成・確定・メール送信などの権限が含まれます。URLの管理は運営担当者の責任において行ってください。</li>
+        <li><strong>免責事項</strong><br>PRISM-HU は安定的な運用に努めますが、Google サービスの障害・仕様変更等に起因する不具合について責任を負いかねます。</li>
+        <li><strong>利用の停止</strong><br>ご利用が不要になった場合は、PRISM-HU までご連絡ください。システムの停止およびデータの削除を行います。</li>
+        <li><strong>変更について</strong><br>本ガイドラインは、サービスの改善に伴い変更されることがあります。変更時は本ページにて告知します。</li>
+      </ol>
+    </details>
+    <p class="note">お申し込みをもって、上記の内容にご同意いただいたものとします。</p>
+  </section>
+
+  <section class="cta-band" id="apply">
+    <div>
+      <h2>まずは利用希望をお知らせください。</h2>
+      <p>通常 <strong>5営業日前後</strong> でセットアップを完了し、運営担当者用URLをメールでお送りします。</p>
+    </div>
+    <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSdvgsMBE09hdgw_nt2kFjKCHp5CxzYoEqcYACs2ZRwCF9MWkQ/viewform?usp=sharing&ouid=105585801588747637109" target="_blank" rel="noopener">お申し込みフォームを開く<span class="arrow">›</span></a>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <p class="section-kicker">MANUAL</p>
+      <h2>操作マニュアル</h2>
+      <p>初回セットアップの手順から、会議の作成・調整・確定まで、画面ごとに確認できます。</p>
+    </div>
+    <a class="button" href="manual-operator-wp.html">運営担当者マニュアルを見る<span class="arrow">›</span></a>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <p class="section-kicker">RELATED</p>
+      <h2>関連ページ</h2>
+      <p>PRISM-HU の事務支援ツールや、ほかの自動化事例もあわせて確認できます。</p>
+    </div>
+    <div class="hero-actions">
+      <a class="button" href="../index.html">事務支援トップ<span class="arrow">›</span></a>
+      <a class="button" href="../office-automation/automation_info.html">事務作業自動化の事例<span class="arrow">›</span></a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <p class="section-kicker">CONTACT</p>
+      <h2>お問い合わせ</h2>
+    </div>
+    <div class="contact-box">
+      <p>
+        <strong>PRISM-HU 事務局</strong><br>
+        <a href="mailto:prism-hu-office@pop.med.hokudai.ac.jp">prism-hu-office@pop.med.hokudai.ac.jp</a><br>
+        <span style="color:var(--muted);">件名に「meetSync」と記載いただけるとスムーズです。</span>
+      </p>
+      <img src="meetSyncfav.png" alt="" width="54" height="54">
+    </div>
+  </section>
+
+  <div class="footer-logo">
+    <img src="meetSynclogo-clean.png" alt="PRISM meetSync">
+  </div>
+
+  <script>
+    (function () {
+      var root = document.getElementById('prism-meetsync');
+      if (!root || root.getAttribute('data-ready') === 'true') return;
+      root.setAttribute('data-ready', 'true');
+
+      var favicon = root.getAttribute('data-favicon') || 'meetSyncfav.png';
+      var faviconUrl = new URL(favicon, window.location.href).href;
+      var icon = document.querySelector('link[rel="icon"]') || document.createElement('link');
+      icon.setAttribute('rel', 'icon');
+      icon.setAttribute('type', 'image/png');
+      icon.setAttribute('href', faviconUrl);
+      if (!icon.parentNode) document.head.appendChild(icon);
+
+      var appleIcon = document.querySelector('link[rel="apple-touch-icon"]') || document.createElement('link');
+      appleIcon.setAttribute('rel', 'apple-touch-icon');
+      appleIcon.setAttribute('href', faviconUrl);
+      if (!appleIcon.parentNode) document.head.appendChild(appleIcon);
+
+      var tabs = Array.prototype.slice.call(root.querySelectorAll('.screen-tab'));
+      var panels = Array.prototype.slice.call(root.querySelectorAll('.screen-panel'));
+
+      function activate(id) {
+        tabs.forEach(function (tab) {
+          var active = tab.getAttribute('data-screen') === id;
+          tab.classList.toggle('is-active', active);
+          tab.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        panels.forEach(function (panel) {
+          panel.classList.toggle('is-active', panel.getAttribute('data-screen-panel') === id);
+        });
+      }
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          activate(tab.getAttribute('data-screen'));
+        });
+      });
+    }());
+  </script>
+</div>
